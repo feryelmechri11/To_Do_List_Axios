@@ -5,7 +5,7 @@ export default class App extends React.Component {
   state = { todos: [] };
 
   async componentDidMount() {
-    let result = await axios.get("https://jsonplaceholder.typicode.com/todos");
+    let result = await axios.get("http://localhost:5000/posts");
 
     await new Promise((x) => setTimeout(x, 3000));
 
@@ -13,9 +13,10 @@ export default class App extends React.Component {
   }
 
   delete(e) {
-    e.preventDefault();
+    //e.preventDefault();
+    console.log(e.id)
     axios
-      .delete('"https://jsonplaceholder.typicode.com/todos"{this.state.id}')
+      .delete(`http://localhost:5000/posts/${e.id}`)
       .then((res) => console.log(res.data));
   }
 
@@ -36,6 +37,7 @@ export default class App extends React.Component {
                 >
                   {todo.title}
                   <span>
+                    <button onClick={()=>this.delete(todo)} > fassakh ay </button>
                     <input type="checkbox" checked={todo.completed} />
                   </span>
                 </li>
@@ -47,6 +49,9 @@ export default class App extends React.Component {
             <span className="sr-only"> Loading ...</span>
           </div>
         )}
+
+
+        
       </div>
     );
   }
