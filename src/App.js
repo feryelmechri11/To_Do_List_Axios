@@ -1,58 +1,56 @@
-import React from "react";
+import React, { Component } from "react";
 import "./App.css";
+import TodoList from "./Todolist";
 import axios from "axios";
-export default class App extends React.Component {
-  state = { todos: [] };
 
-  async componentDidMount() {
-    let result = await axios.get("http://localhost:5000/posts");
+class App extends Component {
+  state = {
+    todos: [],
+  };
 
-    await new Promise((x) => setTimeout(x, 3000));
 
-    this.setState({ todos: result.data });
-  }
+  GetName = (value) => {
+    this.setState({ TaskName: value });
+    console.log(this.state.TaskName);
+  };
 
-  delete(e) {
-    //e.preventDefault();
-    console.log(e.id)
+  Delete = (el) => {
+    let id = el.id;
+    axios.delete(`http://localhost:5000/todoList/${id}`);
     axios
-      .delete(`http://localhost:5000/posts/${e.id}`)
-      .then((res) => console.log(res.data));
+      .get("http://localhost:5000/todoList")
+      .then((res) => this.setState({ todos: res.data }));
+  };
+
+  AddTask = () => {
+    let task = {
+      NameTodo: this.state.TaskName,
+ 
+
+    };
+    axios.post("http://localhost:5000/todoList", task);
+    axios
+      .get("http://localhost:5000/todoList")
+      .then((res) => this.setState({ todos: res.data }));
+  };
+  componentDidMount() {
+    axios
+      .get("http://localhost:5000/todoList")
+      .then((res) => this.setState({ todos: res.data }));
   }
 
-  /******************************************************************* */
   render() {
     return (
-      <div className="container">
-        {this.state.todos.length > 0 ? (
-          <div>
-            <ul className="list-group">
-              <div className="list">Todo List Axios </div>
-              <hr></hr>
-
-              {this.state.todos.map((todo) => (
-                <li
-                  key={todo.id}
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                >
-                  {todo.title}
-                  <span>
-                    <button onClick={()=>this.delete(todo)} > fassakh ay </button>
-                    <input type="checkbox" checked={todo.completed} />
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <div className="loader">
-            <span className="sr-only"> Loading ...</span>
-          </div>
-        )}
-
-
-        
+      <div className="App">
+        <TodoList
+          List={this.state.todos}
+          Delete={this.Delete}
+          GetName={this.GetName}
+          AddTask={this.AddTask}
+        />
       </div>
     );
   }
 }
+
+export default App;

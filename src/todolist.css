@@ -1,0 +1,27 @@
+.AddToDo {
+  padding: 10px;
+  width: 15%;
+  background: #d9d9d9;
+  color: #555;
+  float: left;
+  text-align: center;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+  margin-left: 650px;
+}
+
+.AddToDo:hover {
+  background-color: #bbb;
+}
+
+input {
+    margin: 0;
+    border: black 2px solid ;
+    border-radius: 0;
+    width: 75%;
+    padding: 10px;
+    float: left;
+    font-size: 16px;
+  }
